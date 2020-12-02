@@ -1,9 +1,9 @@
 //index.js
 $(document).ready(()=>{
-  const socket = io.connect();
-
-  //Keep track of the current user
-  let currentUser;
+    const socket = io.connect();
+    let currentUser;
+    // Get the online users from the server
+    socket.emit('get online users');
 
   $('#create-user-btn').click((e)=>{
     e.preventDefault();
@@ -46,5 +46,32 @@ $(document).ready(()=>{
         </div>
       `);
     })
+"""VVV This breaks everything VVV"""
+//     socket.on('get online users', (onlineUsers) => {
+//   //You may have not have seen this for loop before. It's syntax is for(key in obj)
+//   //Our usernames are keys in the object of onlineUsers.
+//   for(username in onlineUsers){
+//     $('.users-online').append(`<div class="user-online">${username}</div>`);
+//   }
+// })
+
+//Refresh the online user list
+// socket.on('user has left', (onlineUsers) => {
+//   $('.users-online').empty();
+//   for(username in onlineUsers){
+//     $('.users-online').append(`<p>${username}</p>`);
+//   }
+// });
+
+
+$('#new-channel-btn').click( () => {
+  let newChannel = $('#new-channel-input').val();
+
+  if(newChannel.length > 0){
+    // Emit the new channel to the server
+    socket.emit('new channel', newChannel);
+    $('#new-channel-input').val("");
+  }
+})
 
 })
