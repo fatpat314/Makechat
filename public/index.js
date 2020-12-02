@@ -38,13 +38,13 @@ $(document).ready(()=>{
   })
 
   //Output the new message
-socket.on('new message', (data) => {
-  $('.message-container').append(`
-    <div class="message">
-      <p class="message-user">${data.sender}: </p>
-      <p class="message-text">${data.message}</p>
-    </div>
-  `);
-})
+    socket.on('new message', (data) => {
+      $('.message-container').append(`
+        <div class="message">
+          <p class="message-user">${data.sender}: </p>
+          <p class="message-text">${data.message}</p>
+        </div>
+      `);
+    })
 
 })
