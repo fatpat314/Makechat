@@ -1,5 +1,7 @@
 //chat.js
-module.exports = (io, socket) => {
+module.exports = (io, socket, onlineUsers) => {
+
+
 
   socket.on('new user', (username) => {
     console.log(`✋ ${username} has joined the chat! ✋`);
@@ -13,11 +15,11 @@ module.exports = (io, socket) => {
     io.emit('new message', data);
   })
 
-  socket.on('get online users', () => {
-  //Send over the onlineUsers
-  socket.emit('get online users', onlineUsers);
-})
 
+  socket.on('get online users', () => {
+      //Send over the onlineUsers
+     socket.emit('get online users', onlineUsers);
+})
 
 // This fires when a user closes out of the application
 // socket.on("disconnect") is a special listener that fires when a user exits out of the application.
@@ -28,8 +30,5 @@ socket.on('disconnect', () => {
 });
 
 
-  socket.on('new channel', (newChannel) => {
-    console.log(newChannel);
-  })
 
 }

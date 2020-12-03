@@ -5,6 +5,7 @@ const server = require('http').Server(app);
 
 
 //Socket.io
+
 const io = require('socket.io')(server);
 //We'll store our online users here
 let onlineUsers = {};
