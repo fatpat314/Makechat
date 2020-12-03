@@ -46,13 +46,16 @@ $('#send-chat-btn').click((e) => {
   $('#send-chat-btn').click((e) => {
     e.preventDefault();
     // Get the message text value
+    let channel = $('.channel-current').text();
     let message = $('#chat-input').val();
     // Make sure it's not empty
     if(message.length > 0){
       // Emit the message with the current user to the server
+      console.log("HELLO")
       socket.emit('new message', {
         sender : currentUser,
         message : message,
+        channel: channel,
       });
       $('#chat-input').val("");
     }
@@ -67,7 +70,10 @@ $('#send-chat-btn').click((e) => {
   //Output the new message
   socket.on('new message', (data) => {
     //Only append the message if the user is currently in that channel
+    console.log("TESTE")
     let currentChannel = $('.channel-current').text();
+    console.log(currentChannel)
+    console.log(data.channel)
     if(currentChannel == data.channel){
       $('.message-container').append(`
         <div class="message">
@@ -105,6 +111,7 @@ socket.on('user changed channel', (data) => {
   $('.channel-current').addClass('channel');
   $('.channel-current').removeClass('channel-current');
   $(`.channel:contains('${data.channel}')`).addClass('channel-current');
+  console.log(data.channel)
   $('.channel-current').removeClass('channel');
   $('.message').remove();
   data.messages.forEach((message) => {
