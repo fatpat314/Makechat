@@ -6,6 +6,16 @@ $(document).ready(()=>{
   // Get the online users from the server
   socket.emit('get online users');
 
+  $('#new-channel-btn').click( () => {
+  let newChannel = $('#new-channel-input').val();
+
+  if(newChannel.length > 0){
+    // Emit the new channel to the server
+    socket.emit('new channel', newChannel);
+    $('#new-channel-input').val("");
+  }
+})
+
   $('#create-user-btn').click((e)=>{
     e.preventDefault();
     if($('#username-input').val().length > 0){
@@ -63,5 +73,29 @@ socket.on('user has left', (onlineUsers) => {
     $('.users-online').append(`<p>${username}</p>`);
   }
 });
+
+// Add the new channel to the channels list (Fires for all clients)
+socket.on('new channel', (newChannel) => {
+  $('.channels').append(`<div class="channel">${newChannel}</div>`);
+});
+
+// Make the channel joined the current channel. Then load the messages.
+// This only fires for the client who made the channel.
+socket.on('user changed channel', (data) => {
+  $('.channel-current').addClass('channel');
+  $('.channel-current').removeClass('channel-current');
+  $(`.channel:contains('${data.channel}')`).addClass('channel-current');
+  $('.channel-current').removeClass('channel');
+  $('.message').remove();
+  data.messages.forEach((message) => {
+    $('.message-container').append(`
+      <div class="message">
+        <p class="message-user">${message.sender}: </p>
+        <p class="message-text">${message.message}</p>
+      </div>
+    `);
+  });
+})
+
 
 })
